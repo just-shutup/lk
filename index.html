@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Кате</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #6b5a63;
+    --pink: #ffc2d6;
+    --pink-deep: #ff9bbb;
+    --cat: #b9c2cd;
+    --cat-shade: #a5afbc;
+    --cream: #fff9f4;
+    --cheek: #ffb0c4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(-45deg, #fff0f5, #fef6ff, #eef7ff, #fff4ec);
+    background-size: 400% 400%;
+    animation: bgFlow 20s ease infinite;
+  }
+  @keyframes bgFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .card {
+    position: relative;
+    z-index: 2;
+    width: min(90vw, 400px);
+    padding: 40px 32px 36px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 34px;
+    box-shadow: 0 20px 55px rgba(255, 155, 187, 0.28);
+    opacity: 0;
+    transform: translateY(28px);
+    animation: cardIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  }
+  @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+
+  /* Котик */
+  .cat-scene {
+    position: relative;
+    width: 200px;
+    height: 190px;
+    margin: 0 auto 8px;
+    opacity: 0;
+    transform: scale(0.6);
+    animation: popIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  }
+  @keyframes popIn { to { opacity: 1; transform: scale(1); } }
+
+  .cat {
+    position: absolute;
+    left: 50%;
+    top: 42px;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 128px;
+    transform-origin: bottom center;
+    animation: sway 3.4s ease-in-out infinite 1.4s;
+  }
+  @keyframes sway {
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    50% { transform: translateX(-50%) rotate(2.5deg); }
+  }
+
+  .body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 150px;
+    height: 108px;
+    background: linear-gradient(180deg, var(--cat), var(--cat-shade));
+    border-radius: 50% 50% 46% 46% / 60% 60% 40% 40%;
+    box-shadow: inset 0 -8px 14px rgba(0,0,0,0.05);
+  }
+
+  .ear {
+    position: absolute;
+    top: -6px;
+    width: 0; height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 34px solid var(--cat);
+    z-index: -1;
+  }
+  .ear.left { left: 24px; transform: rotate(-18deg); }
+  .ear.right { right: 24px; transform: rotate(18deg); }
+  .ear::after {
+    content: "";
+    position: absolute;
+    left: -10px; top: 12px;
+    width: 0; height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 18px solid var(--pink);
+  }
+
+  .eye {
+    position: absolute;
+    top: 46px;
+    width: 12px;
+    height: 16px;
+    background: #4a4048;
+    border-radius: 50%;
+    animation: blink 5s infinite;
+  }
+  .eye.left { left: 44px; }
+  .eye.right { right: 44px; }
+  .eye::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 3px;
+    width: 4px; height: 4px;
+    background: #fff;
+    border-radius: 50%;
+  }
+  @keyframes blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    96% { transform: scaleY(0.1); }
+  }
+
+  .cheek {
+    position: absolute;
+    top: 62px;
+    width: 18px;
+    height: 11px;
+    background: var(--cheek);
+    border-radius: 50%;
+    opacity: 0.7;
+    filter: blur(1px);
+  }
+  .cheek.left { left: 26px; }
+  .cheek.right { right: 26px; }
+
+  .nose {
+    position: absolute;
+    top: 58px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 6px;
+    background: var(--pink-deep);
+    border-radius: 50% 50% 60% 60%;
+  }
+  .mouth {
+    position: absolute;
+    top: 66px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 8px;
+    border-bottom: 2px solid #7a6b72;
+    border-radius: 0 0 50% 50%;
+  }
+
+  /* Лапка машет */
+  .paw {
+    position: absolute;
+    top: 40px;
+    right: -6px;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(180deg, var(--cat), var(--cat-shade));
+    border-radius: 50% 50% 50% 40%;
+    transform-origin: bottom left;
+    animation: wave 1.4s ease-in-out infinite 1.6s;
+    z-index: 4;
+  }
+  @keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-22deg); }
+    75% { transform: rotate(14deg); }
+  }
+
+  /* Сердечко над котиком */
+  .mini-heart {
+    position: absolute;
+    top: 2px;
+    right: 30px;
+    width: 26px;
+    height: 26px;
+    z-index: 5;
+    animation: floaty 2.6s ease-in-out infinite 1.8s;
+  }
+  .mini-heart::before,
+  .mini-heart::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 13px;
+    height: 21px;
+    background: linear-gradient(160deg, var(--pink), var(--pink-deep));
+    border-radius: 12px 12px 0 0;
+  }
+  .mini-heart::before { left: 13px; transform: rotate(-45deg); transform-origin: 0 100%; }
+  .mini-heart::after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.12); }
+  }
+
+  
+
+  .title {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: clamp(36px, 9vw, 50px);
+    color: var(--pink-deep);
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 1s ease 1.5s forwards;
+  }
+
+  .subtitle {
+    margin-top: 6px;
+    font-weight: 600;
+    font-size: clamp(13px, 3.6vw, 15px);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 1s ease 1.9s forwards;
+  }
+
+  .line {
+    margin-top: 18px;
+    font-size: clamp(15px, 4.2vw, 18px);
+    line-height: 1.55;
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 1.2s ease 2.3s forwards;
+  }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  /* Падающие сердечки-конфетти */
+  .confetti {
+    position: fixed;
+    top: -20px;
+    width: 14px;
+    height: 14px;
+    z-index: 1;
+    opacity: 0;
+    animation: fall linear infinite;
+  }
+  .confetti::before,
+  .confetti::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 7px;
+    height: 11px;
+    background: var(--pink-deep);
+    border-radius: 7px 7px 0 0;
+  }
+  .confetti::before { left: 7px; transform: rotate(-45deg); transform-origin: 0 100%; }
+  .confetti::after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(220deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="cat-scene">
+      <div class="mini-heart"></div>
+      <div class="cat">
+        <span class="ear left"></span>
+        <span class="ear right"></span>
+        <div class="body">
+          <span class="eye left"></span>
+          <span class="eye right"></span>
+          <span class="cheek left"></span>
+          <span class="cheek right"></span>
+          <span class="nose"></span>
+          <span class="mouth"></span>
+          
+        </div>
+        <div class="paw"></div>
+      </div>
+    </div>
+
+    <h1 class="title">Катя</h1>
+    <p class="subtitle">котик передаёт привет</p>
+    <p class="line">ты такая же милая,<br />как этот пушистик</p>
+  </main>
+
+  <script>
+    const colors = ['#ff9bbb', '#ffc2d6', '#ffb0c4', '#c9b0ff'];
+    function spawnConfetti() {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      const scale = 0.6 + Math.random() * 0.8;
+      c.style.transform = 'scale(' + scale + ')';
+      c.style.animationDuration = (6 + Math.random() * 5) + 's';
+      const col = colors[Math.floor(Math.random() * colors.length)];
+      c.style.setProperty('--pink-deep', col);
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 12000);
+    }
+    setInterval(spawnConfetti, 1300);
+  </script>
+</body>
+</html>
